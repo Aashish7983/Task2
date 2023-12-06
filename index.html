@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Your Fav Chocolate</title>
+    <style>
+        * {
+            background-color: rgb(228, 211, 190);
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #4CAF50;
+        }
+        
+        #chocolate-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        
+        .chocolate-option {
+            margin: 10px;
+        }
+        
+        #selected-chocolates {
+            list-style: none;
+            padding: 0;
+        }
+        
+        #total-price {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Add Your Fav Chocolate</h1>
+
+    <div id="chocolate-options">
+        <!-- Chocolate options dynamically generated using JavaScript -->
+    </div>
+    <hr>
+
+    <div>
+        <h2>Your Custom Chocolate</h2>
+        <ul id="selected-chocolates">
+            <!-- Selected chocolates will be displayed here -->
+        </ul>
+        <p>Total Price: $<span id="total-price">0.00</span></p>
+    </div>
+
+    <script>
+        // Sample chocolate data (replace this with your actual data)
+        const chocolates = [{
+                id: 1,
+                name: 'Milk Chocolate',
+                price: 2.50
+            }, {
+                id: 2,
+                name: 'Dark Chocolate',
+                price: 3.00
+            }, {
+                id: 3,
+                name: 'White Chocolate',
+                price: 8.75
+            }, {
+                id: 4,
+                name: 'Brown Chocolate',
+                price: 6.75
+            }, {
+                id: 5,
+                name: 'Milk Chocolate',
+                price: 3.75
+            },
+            // Add more chocolates as needed
+        ];
+
+        // Dynamically generate chocolate options
+        const chocolateOptionsContainer = document.getElementById('chocolate-options');
+        chocolates.forEach(chocolate => {
+            const option = document.createElement('div');
+            option.className = 'chocolate-option';
+            option.innerHTML = `
+        <input type="checkbox" id="chocolate${chocolate.id}" class="chocolate-checkbox" data-price="${chocolate.price}">
+        <label for="chocolate${chocolate.id}">${chocolate.name} - $${chocolate.price.toFixed(2)}</label>
+      `;
+            chocolateOptionsContainer.appendChild(option);
+        });
+
+        // Handle chocolate selection and update total price
+        const checkboxes = document.querySelectorAll('.chocolate-checkbox');
+        const totalPriceSpan = document.getElementById('total-price');
+        const selectedChocolatesList = document.getElementById('selected-chocolates');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateTotalPrice);
+        });
+
+        function updateTotalPrice() {
+            let totalPrice = 0;
+            selectedChocolatesList.innerHTML = '';
+
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const chocolateName = document.querySelector(`label[for=${checkbox.id}]`).textContent;
+                    const price = parseFloat(checkbox.dataset.price);
+                    totalPrice += price;
+
+                    const listItem = document.createElement('li');
+                    listItem.textContent = chocolateName;
+                    selectedChocolatesList.appendChild(listItem);
+                }
+            });
+
+            totalPriceSpan.textContent = totalPrice.toFixed(2);
+        }
+    </script>
+</body>
+
+</html>
